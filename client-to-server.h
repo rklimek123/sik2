@@ -17,6 +17,10 @@
 constexpr int CLIENT_MIN_SIZE = 13;
 constexpr int CLIENT_MAX_SIZE = 33;
 
+constexpr int READ_ERROR    = -1;
+constexpr int READ_COMPLETE = -2;
+constexpr int READ_INVALID  = -3;
+
 typedef struct client_to_server {
     uint64_t session_id;
     uint8_t turn_direction;

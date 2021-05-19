@@ -24,9 +24,9 @@ namespace {
     dimensions_t     board_width    = DEFAULT_BOARD_WIDTH;
     dimensions_t     board_height   = DEFAULT_BOARD_HEIGHT;
 
-    std::map<std::string, player_number_t> players;
 
-    extern "C" void syserr(const char *fmt, ...);
+
+    //extern "C" void syserr(const char *fmt, ...);
 
 
     void parse_port(const char* num_str) {
@@ -204,6 +204,21 @@ namespace {
         
         return sock;
     }
+
+
+    void gather_players(int sock) {
+        cts_t req;
+        int ret = 1;
+        while (ret != READ_COMPLETE) {
+            int ret = read_from_client(sock, req);
+            if (ret == READ_ERROR) {
+                syserr("read client");
+            }
+            else if (ret == READ_INVALID) {
+                
+            }
+        }
+    }
 }
 
 int main(int argc, char* argv[]) {
@@ -213,11 +228,12 @@ int main(int argc, char* argv[]) {
     parse_input_parameters(argc, argv);
     listen_sock = set_up_listen_sock();
 
+
     for (;;) {
-        cts_t req;
-        int ret = read_from_client(listen_sock, req);
-        if (ret == -1)
-        while 
+        gather_players(listen_sock);
+
+        
+        
     }
 
     //GameState game(seed, turning_speed, board_width, board_height);

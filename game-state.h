@@ -4,12 +4,14 @@
 #include <stdint.h>
 #include <unistd.h>
 
+#include <algorithm>
 #include <iostream>
 #include <map>
 #include <queue>
 #include <string>
 #include <vector>
 
+#include "err.h"
 #include "random.h"
 #include "types.h"
 
@@ -48,16 +50,23 @@ class GameState {
         GameState(seed_t seed_,
                   turn_speed_t turning_speed_,
                   dimensions_t board_width_,
-                  dimensions_t board_height_):
+                  dimensions_t board_height_,
+                  std::vector<std::string>& players_):
             seed(seed_),
             turning_speed(turning_speed_),
             board_width(board_width_),
             board_height(board_height_) {
             
             rng = Random(seed);
-        }
 
-        void new_game();
+            player_number_t number_of_players = players_.size();
+            std::sort(players_.begin(), players_.end());
+            
+            player_number_t id = 0;
+            for (const std::string& name: players_) {
+                players.insert({name, id++});
+            }
+        }
     
     private:
         seed_t seed;
@@ -67,6 +76,8 @@ class GameState {
 
         bool launched = false;
         int64_t round_number;
+
+        std::map<std::string, player_number_t> players;
 
         uint64_t game_id;
         std::vector<event_t> events;

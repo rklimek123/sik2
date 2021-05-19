@@ -39,18 +39,18 @@ int read_from_client(int listen_sock, cts_t& req) {
     int ret = read(listen_sock, buffer, CLIENT_MAX_SIZE);
     if (ret == -1) {
         if (errno == EAGAIN || errno == EWOULDBLOCK)
-            return -2;
+            return READ_COMPLETE;
         else
-            return -1;
+            return READ_ERROR;
     }
     else if (ret < CLIENT_MIN_SIZE) {
-        return -3;
+        return READ_INVALID;
     }
 
     if (parse_from_client_request(buffer, req)) {
         return ret;
     }
     else {
-        return -3;
+        return READ_INVALID;
     }
 }
