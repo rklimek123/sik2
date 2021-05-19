@@ -7,6 +7,7 @@ class Random {
     public:
         using random_t = seed_t;
 
+        Random(): next_random(1) {};
         Random(seed_t seed): next_random((random_t)seed) {};
         random_t rand();
     private:

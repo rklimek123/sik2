@@ -66,7 +66,7 @@ class GameState {
         int64_t round_number;
 
         uint64_t game_id;
-        std::queue<event_t> events;
+        std::vector<event_t> events;
         std::map<std::string, player_number_t> players;
 
         Random rng;
