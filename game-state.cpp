@@ -151,6 +151,3 @@ void GameState::parse_input_parameters(int argc, char* argv[]) {
     }
 }
 
-void game_init() {
-    game_id = 
-}

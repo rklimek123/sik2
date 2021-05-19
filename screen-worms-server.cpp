@@ -40,7 +40,6 @@ namespace {
         return sock;
     }
 
-
 }
 
 int main(int argc, char* argv[]) {
