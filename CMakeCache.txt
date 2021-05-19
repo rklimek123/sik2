@@ -188,7 +188,19 @@ Project_BINARY_DIR:STATIC=/home/rafal/sik/sik2
 Project_SOURCE_DIR:STATIC=/home/rafal/sik/sik2
 
 //Dependencies for target
+client-to-server_LIB_DEPENDS:STATIC=
+
+//Dependencies for target
 err_LIB_DEPENDS:STATIC=
+
+//Dependencies for target
+game-state_LIB_DEPENDS:STATIC=
+
+//Dependencies for target
+player_LIB_DEPENDS:STATIC=
+
+//Dependencies for target
+random_LIB_DEPENDS:STATIC=
 
 
 ########################

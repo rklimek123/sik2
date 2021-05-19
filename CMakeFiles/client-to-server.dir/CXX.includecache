@@ -1,0 +1,22 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/rafal/sik/sik2/client-to-server.cpp
+client-to-server.h
+/home/rafal/sik/sik2/client-to-server.h
+
+/home/rafal/sik/sik2/client-to-server.h
+endian.h
+-
+netinet/in.h
+-
+stdint.h
+-
+string
+-
+

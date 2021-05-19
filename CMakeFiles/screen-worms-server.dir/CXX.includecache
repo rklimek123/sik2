@@ -8,6 +8,30 @@
 
 /home/rafal/sik/sik2/err.h
 
+/home/rafal/sik/sik2/game-state.h
+stdint.h
+-
+unistd.h
+-
+iostream
+-
+map
+-
+queue
+-
+string
+-
+vector
+-
+random.h
+/home/rafal/sik/sik2/random.h
+types.h
+/home/rafal/sik/sik2/types.h
+
+/home/rafal/sik/sik2/random.h
+types.h
+/home/rafal/sik/sik2/types.h
+
 /home/rafal/sik/sik2/screen-worms-server.cpp
 sys/types.h
 -
@@ -19,12 +43,20 @@ netinet/ip6.h
 -
 iostream
 -
-stdint.h
--
 string
--
-unistd.h
 -
 err.h
 /home/rafal/sik/sik2/err.h
+game-state.h
+/home/rafal/sik/sik2/game-state.h
+types.h
+/home/rafal/sik/sik2/types.h
+
+/home/rafal/sik/sik2/types.h
+ctime
+-
+stdint.h
+-
+unistd.h
+-
 

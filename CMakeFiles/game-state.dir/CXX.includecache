@@ -1,0 +1,44 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/rafal/sik/sik2/game-state.cpp
+game-state.h
+/home/rafal/sik/sik2/game-state.h
+
+/home/rafal/sik/sik2/game-state.h
+stdint.h
+-
+unistd.h
+-
+iostream
+-
+map
+-
+queue
+-
+string
+-
+vector
+-
+random.h
+/home/rafal/sik/sik2/random.h
+types.h
+/home/rafal/sik/sik2/types.h
+
+/home/rafal/sik/sik2/random.h
+types.h
+/home/rafal/sik/sik2/types.h
+
+/home/rafal/sik/sik2/types.h
+ctime
+-
+stdint.h
+-
+unistd.h
+-
+

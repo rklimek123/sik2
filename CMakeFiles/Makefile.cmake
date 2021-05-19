@@ -42,6 +42,10 @@ set(CMAKE_MAKEFILE_PRODUCTS
 
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
-  "CMakeFiles/screen-worms-server.dir/DependInfo.cmake"
+  "CMakeFiles/random.dir/DependInfo.cmake"
   "CMakeFiles/err.dir/DependInfo.cmake"
+  "CMakeFiles/player.dir/DependInfo.cmake"
+  "CMakeFiles/client-to-server.dir/DependInfo.cmake"
+  "CMakeFiles/game-state.dir/DependInfo.cmake"
+  "CMakeFiles/screen-worms-server.dir/DependInfo.cmake"
   )

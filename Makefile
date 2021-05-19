@@ -80,6 +80,18 @@ install/local/fast: preinstall/fast
 	/usr/bin/cmake -DCMAKE_INSTALL_LOCAL_ONLY=1 -P cmake_install.cmake
 .PHONY : install/local/fast
 
+# Special rule for the target install
+install: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
+	/usr/bin/cmake -P cmake_install.cmake
+.PHONY : install
+
+# Special rule for the target install
+install/fast: preinstall/fast
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
+	/usr/bin/cmake -P cmake_install.cmake
+.PHONY : install/fast
+
 # Special rule for the target list_install_components
 list_install_components:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Only default component available"
@@ -111,18 +123,6 @@ rebuild_cache:
 rebuild_cache/fast: rebuild_cache
 
 .PHONY : rebuild_cache/fast
-
-# Special rule for the target install
-install: preinstall
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
-	/usr/bin/cmake -P cmake_install.cmake
-.PHONY : install
-
-# Special rule for the target install
-install/fast: preinstall/fast
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
-	/usr/bin/cmake -P cmake_install.cmake
-.PHONY : install/fast
 
 # The main all target
 all: cmake_check_build_system
@@ -157,17 +157,17 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named screen-worms-server
+# Target rules for targets named random
 
 # Build rule for target.
-screen-worms-server: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 screen-worms-server
-.PHONY : screen-worms-server
+random: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 random
+.PHONY : random
 
 # fast build rule for target.
-screen-worms-server/fast:
-	$(MAKE) -f CMakeFiles/screen-worms-server.dir/build.make CMakeFiles/screen-worms-server.dir/build
-.PHONY : screen-worms-server/fast
+random/fast:
+	$(MAKE) -f CMakeFiles/random.dir/build.make CMakeFiles/random.dir/build
+.PHONY : random/fast
 
 #=============================================================================
 # Target rules for targets named err
@@ -181,6 +181,85 @@ err: cmake_check_build_system
 err/fast:
 	$(MAKE) -f CMakeFiles/err.dir/build.make CMakeFiles/err.dir/build
 .PHONY : err/fast
+
+#=============================================================================
+# Target rules for targets named player
+
+# Build rule for target.
+player: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 player
+.PHONY : player
+
+# fast build rule for target.
+player/fast:
+	$(MAKE) -f CMakeFiles/player.dir/build.make CMakeFiles/player.dir/build
+.PHONY : player/fast
+
+#=============================================================================
+# Target rules for targets named client-to-server
+
+# Build rule for target.
+client-to-server: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 client-to-server
+.PHONY : client-to-server
+
+# fast build rule for target.
+client-to-server/fast:
+	$(MAKE) -f CMakeFiles/client-to-server.dir/build.make CMakeFiles/client-to-server.dir/build
+.PHONY : client-to-server/fast
+
+#=============================================================================
+# Target rules for targets named game-state
+
+# Build rule for target.
+game-state: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 game-state
+.PHONY : game-state
+
+# fast build rule for target.
+game-state/fast:
+	$(MAKE) -f CMakeFiles/game-state.dir/build.make CMakeFiles/game-state.dir/build
+.PHONY : game-state/fast
+
+#=============================================================================
+# Target rules for targets named screen-worms-server
+
+# Build rule for target.
+screen-worms-server: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 screen-worms-server
+.PHONY : screen-worms-server
+
+# fast build rule for target.
+screen-worms-server/fast:
+	$(MAKE) -f CMakeFiles/screen-worms-server.dir/build.make CMakeFiles/screen-worms-server.dir/build
+.PHONY : screen-worms-server/fast
+
+client-to-server.o: client-to-server.cpp.o
+
+.PHONY : client-to-server.o
+
+# target to build an object file
+client-to-server.cpp.o:
+	$(MAKE) -f CMakeFiles/client-to-server.dir/build.make CMakeFiles/client-to-server.dir/client-to-server.cpp.o
+.PHONY : client-to-server.cpp.o
+
+client-to-server.i: client-to-server.cpp.i
+
+.PHONY : client-to-server.i
+
+# target to preprocess a source file
+client-to-server.cpp.i:
+	$(MAKE) -f CMakeFiles/client-to-server.dir/build.make CMakeFiles/client-to-server.dir/client-to-server.cpp.i
+.PHONY : client-to-server.cpp.i
+
+client-to-server.s: client-to-server.cpp.s
+
+.PHONY : client-to-server.s
+
+# target to generate assembly for a file
+client-to-server.cpp.s:
+	$(MAKE) -f CMakeFiles/client-to-server.dir/build.make CMakeFiles/client-to-server.dir/client-to-server.cpp.s
+.PHONY : client-to-server.cpp.s
 
 err.o: err.c.o
 
@@ -208,6 +287,87 @@ err.s: err.c.s
 err.c.s:
 	$(MAKE) -f CMakeFiles/err.dir/build.make CMakeFiles/err.dir/err.c.s
 .PHONY : err.c.s
+
+game-state.o: game-state.cpp.o
+
+.PHONY : game-state.o
+
+# target to build an object file
+game-state.cpp.o:
+	$(MAKE) -f CMakeFiles/game-state.dir/build.make CMakeFiles/game-state.dir/game-state.cpp.o
+.PHONY : game-state.cpp.o
+
+game-state.i: game-state.cpp.i
+
+.PHONY : game-state.i
+
+# target to preprocess a source file
+game-state.cpp.i:
+	$(MAKE) -f CMakeFiles/game-state.dir/build.make CMakeFiles/game-state.dir/game-state.cpp.i
+.PHONY : game-state.cpp.i
+
+game-state.s: game-state.cpp.s
+
+.PHONY : game-state.s
+
+# target to generate assembly for a file
+game-state.cpp.s:
+	$(MAKE) -f CMakeFiles/game-state.dir/build.make CMakeFiles/game-state.dir/game-state.cpp.s
+.PHONY : game-state.cpp.s
+
+player.o: player.cpp.o
+
+.PHONY : player.o
+
+# target to build an object file
+player.cpp.o:
+	$(MAKE) -f CMakeFiles/player.dir/build.make CMakeFiles/player.dir/player.cpp.o
+.PHONY : player.cpp.o
+
+player.i: player.cpp.i
+
+.PHONY : player.i
+
+# target to preprocess a source file
+player.cpp.i:
+	$(MAKE) -f CMakeFiles/player.dir/build.make CMakeFiles/player.dir/player.cpp.i
+.PHONY : player.cpp.i
+
+player.s: player.cpp.s
+
+.PHONY : player.s
+
+# target to generate assembly for a file
+player.cpp.s:
+	$(MAKE) -f CMakeFiles/player.dir/build.make CMakeFiles/player.dir/player.cpp.s
+.PHONY : player.cpp.s
+
+random.o: random.cpp.o
+
+.PHONY : random.o
+
+# target to build an object file
+random.cpp.o:
+	$(MAKE) -f CMakeFiles/random.dir/build.make CMakeFiles/random.dir/random.cpp.o
+.PHONY : random.cpp.o
+
+random.i: random.cpp.i
+
+.PHONY : random.i
+
+# target to preprocess a source file
+random.cpp.i:
+	$(MAKE) -f CMakeFiles/random.dir/build.make CMakeFiles/random.dir/random.cpp.i
+.PHONY : random.cpp.i
+
+random.s: random.cpp.s
+
+.PHONY : random.s
+
+# target to generate assembly for a file
+random.cpp.s:
+	$(MAKE) -f CMakeFiles/random.dir/build.make CMakeFiles/random.dir/random.cpp.s
+.PHONY : random.cpp.s
 
 screen-worms-server.o: screen-worms-server.cpp.o
 
@@ -244,15 +404,31 @@ help:
 	@echo "... depend"
 	@echo "... install/strip"
 	@echo "... install/local"
-	@echo "... screen-worms-server"
+	@echo "... install"
 	@echo "... list_install_components"
+	@echo "... random"
 	@echo "... err"
 	@echo "... edit_cache"
+	@echo "... player"
+	@echo "... client-to-server"
 	@echo "... rebuild_cache"
-	@echo "... install"
+	@echo "... game-state"
+	@echo "... screen-worms-server"
+	@echo "... client-to-server.o"
+	@echo "... client-to-server.i"
+	@echo "... client-to-server.s"
 	@echo "... err.o"
 	@echo "... err.i"
 	@echo "... err.s"
+	@echo "... game-state.o"
+	@echo "... game-state.i"
+	@echo "... game-state.s"
+	@echo "... player.o"
+	@echo "... player.i"
+	@echo "... player.s"
+	@echo "... random.o"
+	@echo "... random.i"
+	@echo "... random.s"
 	@echo "... screen-worms-server.o"
 	@echo "... screen-worms-server.i"
 	@echo "... screen-worms-server.s"
