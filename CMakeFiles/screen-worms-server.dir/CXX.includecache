@@ -1,0 +1,30 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/rafal/sik/sik2/err.h
+
+/home/rafal/sik/sik2/screen-worms-server.cpp
+sys/types.h
+-
+sys/socket.h
+-
+netinet/in.h
+-
+netinet/ip6.h
+-
+iostream
+-
+stdint.h
+-
+string
+-
+unistd.h
+-
+err.h
+/home/rafal/sik/sik2/err.h
+

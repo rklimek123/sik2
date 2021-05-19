@@ -1,0 +1,8 @@
+/home/rafal/sik/sik2/CMakeFiles/install/strip.dir
+/home/rafal/sik/sik2/CMakeFiles/install/local.dir
+/home/rafal/sik/sik2/CMakeFiles/screen-worms-server.dir
+/home/rafal/sik/sik2/CMakeFiles/list_install_components.dir
+/home/rafal/sik/sik2/CMakeFiles/err.dir
+/home/rafal/sik/sik2/CMakeFiles/edit_cache.dir
+/home/rafal/sik/sik2/CMakeFiles/rebuild_cache.dir
+/home/rafal/sik/sik2/CMakeFiles/install.dir

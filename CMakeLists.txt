@@ -1,0 +1,16 @@
+cmake_minimum_required (VERSION 3.1)
+
+set(CMAKE_CXX_FLAGS "-g -Wall")
+
+# http://stackoverflow.com/questions/10555706/
+macro (add_executable _name)
+  _add_executable(${ARGV})
+  if (TARGET ${_name})
+    target_link_libraries(${_name} err)
+  endif()
+endmacro()
+
+add_library(err err.c)
+add_executable(screen-worms-server screen-worms-server.cpp)
+
+install(TARGETS DESTINATION .)
