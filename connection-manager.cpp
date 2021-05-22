@@ -4,6 +4,28 @@ namespace {
     constexpr int VERIFY_REPLACE = -1;
     constexpr int VERIFY_OK      = 0;
     constexpr int VERIFY_IGNORE  = 1;
+
+    int delay_ms(const TimePoint& a, const TimePoint& b) {
+        uint64_t nanoseconds = std::chrono::duration<uint64_t, std::nano>(a-b).count();
+        return nanoseconds / 1e6;
+    }
+}
+
+player_number_t ConnectionManager::connected_players_count() const {
+    return connected_players;
+}
+
+void ConnectionManager::check_activity() {
+    TimePoint now = Clock::now();
+
+    for (auto it = connections.begin(); it != connections.end();) {
+        if (delay_ms(now, it->second.last_activity) >= CLIENT_TIMEOUT_MS) {
+            remove_connection(it++);
+        }
+        else {
+            ++it;
+        }
+    }
 }
 
 void ConnectionManager::add_connection(const cts_t& req) {
@@ -32,7 +54,7 @@ void ConnectionManager::add_connection(const cts_t& req) {
     }
 }
 
-void ConnectionManager::remove_connection(map_iter& con) {
+void ConnectionManager::remove_connection(map_iter con) {
     con_state_t& con_st = con->second;
 
     if (con_st.is_player) {
@@ -89,10 +111,12 @@ bool ConnectionManager::verify_unique_playername(const std::string& playername) 
 
 bool ConnectionManager::handle_request_nogame(const cts_t& req) {
     const sockaddr& addr = req.client_address;
-
+    
     map_iter con = connections.find(addr);
     if (con != connections.end()) {
-        if (verify_unique_playername(req.player_name)) {
+        if (connected_clients >= CLIENT_MAX_AMOUNT &&
+            verify_unique_playername(req.player_name)) {
+            
             add_connection(req);
         }
     }
@@ -102,12 +126,15 @@ bool ConnectionManager::handle_request_nogame(const cts_t& req) {
 
         switch (ret) {
             case VERIFY_OK:
+                con_st.last_activity = req.req_time;
                 try_toggle_ready_state(con, req);
                 break;
             
             case VERIFY_REPLACE:
                 remove_connection(con);
-                add_connection(req);
+                if (verify_unique_playername(req.player_name)) {
+                    add_connection(req);
+                }
                 break;
 
             default:
@@ -116,4 +143,27 @@ bool ConnectionManager::handle_request_nogame(const cts_t& req) {
     }
 
     return connected_players >= 2 && ready_players == connected_players;
+}
+
+player_number_t ConnectionManager::get_player_index(const std::string& playername) const {
+    const auto& it = playernames.find(playername);
+    if (it == playernames.end()) {
+        throw new std::invalid_argument("No player of that name found");
+    }
+
+    return std::distance(playernames.begin(), it);
+}
+
+void ConnectionManager::prepare_for_new_game() {
+    for (auto& con: connections) {
+        con_state_t& con_st = con.second;
+
+        if (con_st.is_player) {
+            con_st.player_number = get_player_index(con_st.player_name);
+            con_st.in_game = true;
+            con_st.wants_to_play = false;
+        }
+    }
+
+    ready_players = 0;
 }

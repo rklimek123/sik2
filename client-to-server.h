@@ -32,7 +32,7 @@ constexpr turn_direction_t TURN_STRAIGHT = 0;
 constexpr turn_direction_t TURN_LEFT = 1;
 constexpr turn_direction_t TURN_RIGHT = 2;
 
-typedef struct client_to_server {
+struct cts_t {
     session_id_t session_id;
     turn_direction_t turn_direction;
     event_no_t next_expected_event_no;
@@ -42,7 +42,7 @@ typedef struct client_to_server {
     socklen_t client_addr_len;
 
     TimePoint req_time;
-} cts_t;
+};
 
 constexpr int CLIENT_REQUEST_DELAY_MS = 30;
 

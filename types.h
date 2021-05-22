@@ -27,7 +27,7 @@ constexpr int64_t MIN_BOARD_HEIGHT   = 1;
 
 constexpr int64_t MAX_PORT           = 49151;
 constexpr int64_t MAX_SEED           = UINT32_MAX;
-constexpr int64_t MAX_TURNING_SPEED  = 1000;
+constexpr int64_t MAX_TURNING_SPEED  = 359;
 constexpr int64_t MAX_ROUNDS_PER_SEC = 200;
 constexpr int64_t MAX_BOARD_WIDTH    = 4000;
 constexpr int64_t MAX_BOARD_HEIGHT   = 4000;

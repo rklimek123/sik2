@@ -14,9 +14,9 @@
 #include <cstring>
 #include <string>
 
-typedef struct server_to_client {
+struct stc_t {
     
-} stc_t;
+};
 
 int send_to_client_blank(int listen_sock, const sockaddr* address, socklen_t addr_len);
 

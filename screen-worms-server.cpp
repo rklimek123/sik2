@@ -16,8 +16,9 @@
 #include "server-to-client.h"
 #include "connection-manager.h"
 #include "err.h"
+#include "event-parser.h"
 #include "game-state.h"
-#include "player.h"
+#include "random.h";
 #include "types.h"
 
 namespace {
@@ -220,6 +221,8 @@ namespace {
         if (bind(listen_socket, (struct sockaddr *) &addr, (socklen_t) sizeof(addr)) < 0) {
             syserr("bind");
         }
+
+        set_nonblock(true);
     }
 
     void set_nonblock(bool turn) {
@@ -230,16 +233,15 @@ namespace {
     }
 
 
-
-
     void gather_players() {
         bool need_start;
 
         while (!need_start) {
+            connection_manager.check_activity();
+
             cts_t req;
             int ret = read_from_client(listen_socket, req, false);
             if (ret > 0) {
-                set_nonblock(true);
                 need_start = connection_manager.handle_request_nogame(req);
                 send_to_client_blank(listen_socket, &req.client_address, req.client_addr_len);
             }
@@ -252,14 +254,28 @@ namespace {
 
 int main(int argc, char* argv[]) {
     int listen_sock;
+    uint32_t game_id;
 
     parse_input_parameters(argc, argv);
+    Random rng(seed);
+
     set_up_listen_socket();
     
-    bool l = false;
     for (;;) {
         gather_players();
-    }
+        connection_manager.prepare_for_new_game();
+        GameState game(rng,
+                       turning_speed,
+                       board_width,
+                       board_height,
+                       connection_manager.connected_players_count());
+        
+        game_id = game.get_game_id();
+        
+        event_no_t current_event =
+            game.event_start_newgame(connection_manager.playernames);
+        
+        connection_manager.broadcast(listen_socket, game_id, 0, current_event);
 
-    // GameState game(seed, turning_speed, board_width, board_height);
+    }
 }
