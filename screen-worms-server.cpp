@@ -14,6 +14,7 @@
 
 #include "client-to-server.h"
 #include "server-to-client.h"
+#include "connection-manager.h"
 #include "err.h"
 #include "game-state.h"
 #include "player.h"
@@ -34,11 +35,10 @@ namespace {
     dimensions_t     board_height   = DEFAULT_BOARD_HEIGHT;
 
     int listen_socket;
-    player_number_t ready_players = 0;
-    player_number_t connected_players = 0;
-    player_number_t connected_clients = 0; // Active players and observers
 
     extern "C" void syserr(const char *fmt, ...);
+
+    ConnectionManager connection_manager;
 
 
     void parse_port(const char* num_str) {
@@ -229,42 +229,25 @@ namespace {
             syserr("fcntl switch nonblocking");
     }
 
-/*
-    std::set<cts_t> get_from_clients(bool game_started) {
-        cts_t req;
-        int ret = 1;
-        while (ret != READ_COMPLETE) {
-            int ret = read_from_client(listen_socket, req);
-            if (ret == READ_ERROR) {
-                syserr("read client");
-            }
-            else if (ret == READ_INVALID) {
-                
-            }
-        }
-        
-        std::set<cts_t> retu;
-        return retu;
-    }
+
 
 
     void gather_players() {
-        while (!(connected_players > 2 && connected_players == ready_players)) {
+        bool need_start;
+
+        while (!need_start) {
             cts_t req;
-            int ret = read_from_client(listen_socket, req);
+            int ret = read_from_client(listen_socket, req, false);
+            if (ret > 0) {
+                set_nonblock(true);
+                need_start = connection_manager.handle_request_nogame(req);
+                send_to_client_blank(listen_socket, &req.client_address, req.client_addr_len);
+            }
 
-            if (ret == READ_ERROR) {
-                syserr("read client");
-            }
-            else if (ret == READ_INVALID) {
-                
-            }
+            if (!need_start)
+                usleep(1000 * CLIENT_REQUEST_DELAY_MS);
         }
-
-        if (fcntl(listen_socket, F_SETFL, O_NONBLOCK) < 0)
-            syserr("fcntl");
     }
-    */
 }
 
 int main(int argc, char* argv[]) {
@@ -275,29 +258,7 @@ int main(int argc, char* argv[]) {
     
     bool l = false;
     for (;;) {
-        //gather_players();
-        cts_t req;
-        int ret = read_from_client(listen_socket, req, false);
-        if (ret > 0 || ret == READ_INVALID) {
-            std::pair<uint64_t, uint16_t> cl;
-            sockaddr_in sa = *(sockaddr_in*)(&req.client_address);
-            cl.first = sa.sin_addr.s_addr;
-            cl.second = sa.sin_port;
-
-            if (setting.find(cl) != setting.end()) {
-                std::cout << "Has read a thingie!\n";
-            }
-            else {
-                setting.insert(cl);
-                std::cout << "new boi\n";
-            }
-            
-            sockaddr_in s = *(sockaddr_in*)(&req.client_address);
-            std::cout << "Connection from " << inet_ntoa(s.sin_addr) << ":" << ntohs(s.sin_port) << " lol\n";
-            send_to_client_blank(listen_socket, &req.client_address, req.client_addr_len);
-        }
-        usleep(1000 * CLIENT_REQUEST_DELAY_MS);
-        std::cout << "Poll loop finished\n";
+        gather_players();
     }
 
     // GameState game(seed, turning_speed, board_width, board_height);

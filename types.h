@@ -32,4 +32,10 @@ constexpr int64_t MAX_ROUNDS_PER_SEC = 200;
 constexpr int64_t MAX_BOARD_WIDTH    = 4000;
 constexpr int64_t MAX_BOARD_HEIGHT   = 4000;
 
+using player_number_t  = uint8_t;
+constexpr player_number_t MAX_NUMBER_OF_PLAYERS = 25;
+
+using Clock = std::chrono::high_resolution_clock;
+using TimePoint = std::chrono::time_point<Clock>;
+
 #endif /* TYPES_H */

@@ -6,6 +6,7 @@
 #include <netinet/in.h>
 #include <netinet/ip6.h>
 
+#include <chrono>
 #include <endian.h>
 #include <errno.h>
 #include <stdint.h>
@@ -13,6 +14,8 @@
 
 #include <cstring>
 #include <string>
+
+#include "types.h"
 
 constexpr int CLIENT_MIN_SIZE = 13;
 constexpr int CLIENT_MAX_SIZE = 33;
@@ -37,6 +40,8 @@ typedef struct client_to_server {
     
     sockaddr client_address;
     socklen_t client_addr_len;
+
+    TimePoint req_time;
 } cts_t;
 
 constexpr int CLIENT_REQUEST_DELAY_MS = 30;

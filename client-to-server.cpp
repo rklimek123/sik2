@@ -27,6 +27,7 @@ namespace {
         result.turn_direction = nturn_direction;
         result.next_expected_event_no = ntohl(nnext_expected_event_no);
         result.player_name = data;
+        result.req_time = Clock::now();
 
         return verify_cts(result);
     }
