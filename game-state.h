@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "err.h"
+#include "player.h"
 #include "random.h"
 #include "types.h"
 

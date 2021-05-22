@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/rafal/sik/sik2/screen-worms-server.cpp" "/home/rafal/sik/sik2/CMakeFiles/screen-worms-server.dir/screen-worms-server.cpp.o"
+  "/home/rafal/sik/sik2/server-to-client.cpp" "/home/rafal/sik/sik2/CMakeFiles/server-to-client.dir/server-to-client.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
@@ -14,9 +14,6 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
-  "/home/rafal/sik/sik2/CMakeFiles/err.dir/DependInfo.cmake"
-  "/home/rafal/sik/sik2/CMakeFiles/client-to-server.dir/DependInfo.cmake"
-  "/home/rafal/sik/sik2/CMakeFiles/server-to-client.dir/DependInfo.cmake"
   )
 
 # Fortran module output directory.

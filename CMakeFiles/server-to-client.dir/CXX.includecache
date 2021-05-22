@@ -6,11 +6,11 @@
 
 #IncludeRegexTransform: 
 
-/home/rafal/sik/sik2/client-to-server.cpp
-client-to-server.h
-/home/rafal/sik/sik2/client-to-server.h
+/home/rafal/sik/sik2/server-to-client.cpp
+server-to-client.h
+/home/rafal/sik/sik2/server-to-client.h
 
-/home/rafal/sik/sik2/client-to-server.h
+/home/rafal/sik/sik2/server-to-client.h
 sys/types.h
 -
 sys/socket.h

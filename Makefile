@@ -157,17 +157,17 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named random
+# Target rules for targets named screen-worms-server
 
 # Build rule for target.
-random: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 random
-.PHONY : random
+screen-worms-server: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 screen-worms-server
+.PHONY : screen-worms-server
 
 # fast build rule for target.
-random/fast:
-	$(MAKE) -f CMakeFiles/random.dir/build.make CMakeFiles/random.dir/build
-.PHONY : random/fast
+screen-worms-server/fast:
+	$(MAKE) -f CMakeFiles/screen-worms-server.dir/build.make CMakeFiles/screen-worms-server.dir/build
+.PHONY : screen-worms-server/fast
 
 #=============================================================================
 # Target rules for targets named err
@@ -222,17 +222,30 @@ game-state/fast:
 .PHONY : game-state/fast
 
 #=============================================================================
-# Target rules for targets named screen-worms-server
+# Target rules for targets named random
 
 # Build rule for target.
-screen-worms-server: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 screen-worms-server
-.PHONY : screen-worms-server
+random: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 random
+.PHONY : random
 
 # fast build rule for target.
-screen-worms-server/fast:
-	$(MAKE) -f CMakeFiles/screen-worms-server.dir/build.make CMakeFiles/screen-worms-server.dir/build
-.PHONY : screen-worms-server/fast
+random/fast:
+	$(MAKE) -f CMakeFiles/random.dir/build.make CMakeFiles/random.dir/build
+.PHONY : random/fast
+
+#=============================================================================
+# Target rules for targets named server-to-client
+
+# Build rule for target.
+server-to-client: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 server-to-client
+.PHONY : server-to-client
+
+# fast build rule for target.
+server-to-client/fast:
+	$(MAKE) -f CMakeFiles/server-to-client.dir/build.make CMakeFiles/server-to-client.dir/build
+.PHONY : server-to-client/fast
 
 client-to-server.o: client-to-server.cpp.o
 
@@ -396,6 +409,33 @@ screen-worms-server.cpp.s:
 	$(MAKE) -f CMakeFiles/screen-worms-server.dir/build.make CMakeFiles/screen-worms-server.dir/screen-worms-server.cpp.s
 .PHONY : screen-worms-server.cpp.s
 
+server-to-client.o: server-to-client.cpp.o
+
+.PHONY : server-to-client.o
+
+# target to build an object file
+server-to-client.cpp.o:
+	$(MAKE) -f CMakeFiles/server-to-client.dir/build.make CMakeFiles/server-to-client.dir/server-to-client.cpp.o
+.PHONY : server-to-client.cpp.o
+
+server-to-client.i: server-to-client.cpp.i
+
+.PHONY : server-to-client.i
+
+# target to preprocess a source file
+server-to-client.cpp.i:
+	$(MAKE) -f CMakeFiles/server-to-client.dir/build.make CMakeFiles/server-to-client.dir/server-to-client.cpp.i
+.PHONY : server-to-client.cpp.i
+
+server-to-client.s: server-to-client.cpp.s
+
+.PHONY : server-to-client.s
+
+# target to generate assembly for a file
+server-to-client.cpp.s:
+	$(MAKE) -f CMakeFiles/server-to-client.dir/build.make CMakeFiles/server-to-client.dir/server-to-client.cpp.s
+.PHONY : server-to-client.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -406,14 +446,15 @@ help:
 	@echo "... install/local"
 	@echo "... install"
 	@echo "... list_install_components"
-	@echo "... random"
+	@echo "... screen-worms-server"
 	@echo "... err"
 	@echo "... edit_cache"
 	@echo "... player"
 	@echo "... client-to-server"
 	@echo "... rebuild_cache"
 	@echo "... game-state"
-	@echo "... screen-worms-server"
+	@echo "... random"
+	@echo "... server-to-client"
 	@echo "... client-to-server.o"
 	@echo "... client-to-server.i"
 	@echo "... client-to-server.s"
@@ -432,6 +473,9 @@ help:
 	@echo "... screen-worms-server.o"
 	@echo "... screen-worms-server.i"
 	@echo "... screen-worms-server.s"
+	@echo "... server-to-client.o"
+	@echo "... server-to-client.i"
+	@echo "... server-to-client.s"
 .PHONY : help
 
 

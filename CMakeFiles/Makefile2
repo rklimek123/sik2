@@ -60,39 +60,41 @@ CMAKE_SOURCE_DIR = /home/rafal/sik/sik2
 CMAKE_BINARY_DIR = /home/rafal/sik/sik2
 
 #=============================================================================
-# Target rules for target CMakeFiles/random.dir
+# Target rules for target CMakeFiles/screen-worms-server.dir
 
 # All Build rule for target.
-CMakeFiles/random.dir/all:
-	$(MAKE) -f CMakeFiles/random.dir/build.make CMakeFiles/random.dir/depend
-	$(MAKE) -f CMakeFiles/random.dir/build.make CMakeFiles/random.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/rafal/sik/sik2/CMakeFiles --progress-num=9,10 "Built target random"
-.PHONY : CMakeFiles/random.dir/all
+CMakeFiles/screen-worms-server.dir/all: CMakeFiles/err.dir/all
+CMakeFiles/screen-worms-server.dir/all: CMakeFiles/client-to-server.dir/all
+CMakeFiles/screen-worms-server.dir/all: CMakeFiles/server-to-client.dir/all
+	$(MAKE) -f CMakeFiles/screen-worms-server.dir/build.make CMakeFiles/screen-worms-server.dir/depend
+	$(MAKE) -f CMakeFiles/screen-worms-server.dir/build.make CMakeFiles/screen-worms-server.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/rafal/sik/sik2/CMakeFiles --progress-num=11,12 "Built target screen-worms-server"
+.PHONY : CMakeFiles/screen-worms-server.dir/all
 
 # Include target in all.
-all: CMakeFiles/random.dir/all
+all: CMakeFiles/screen-worms-server.dir/all
 
 .PHONY : all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/random.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/rafal/sik/sik2/CMakeFiles 2
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/random.dir/all
+CMakeFiles/screen-worms-server.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/rafal/sik/sik2/CMakeFiles 8
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/screen-worms-server.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/rafal/sik/sik2/CMakeFiles 0
-.PHONY : CMakeFiles/random.dir/rule
+.PHONY : CMakeFiles/screen-worms-server.dir/rule
 
 # Convenience name for target.
-random: CMakeFiles/random.dir/rule
+screen-worms-server: CMakeFiles/screen-worms-server.dir/rule
 
-.PHONY : random
-
-# clean rule for target.
-CMakeFiles/random.dir/clean:
-	$(MAKE) -f CMakeFiles/random.dir/build.make CMakeFiles/random.dir/clean
-.PHONY : CMakeFiles/random.dir/clean
+.PHONY : screen-worms-server
 
 # clean rule for target.
-clean: CMakeFiles/random.dir/clean
+CMakeFiles/screen-worms-server.dir/clean:
+	$(MAKE) -f CMakeFiles/screen-worms-server.dir/build.make CMakeFiles/screen-worms-server.dir/clean
+.PHONY : CMakeFiles/screen-worms-server.dir/clean
+
+# clean rule for target.
+clean: CMakeFiles/screen-worms-server.dir/clean
 
 .PHONY : clean
 
@@ -245,39 +247,76 @@ clean: CMakeFiles/game-state.dir/clean
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/screen-worms-server.dir
+# Target rules for target CMakeFiles/random.dir
 
 # All Build rule for target.
-CMakeFiles/screen-worms-server.dir/all: CMakeFiles/err.dir/all
-	$(MAKE) -f CMakeFiles/screen-worms-server.dir/build.make CMakeFiles/screen-worms-server.dir/depend
-	$(MAKE) -f CMakeFiles/screen-worms-server.dir/build.make CMakeFiles/screen-worms-server.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/rafal/sik/sik2/CMakeFiles --progress-num=11,12 "Built target screen-worms-server"
-.PHONY : CMakeFiles/screen-worms-server.dir/all
+CMakeFiles/random.dir/all:
+	$(MAKE) -f CMakeFiles/random.dir/build.make CMakeFiles/random.dir/depend
+	$(MAKE) -f CMakeFiles/random.dir/build.make CMakeFiles/random.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/rafal/sik/sik2/CMakeFiles --progress-num=9,10 "Built target random"
+.PHONY : CMakeFiles/random.dir/all
 
 # Include target in all.
-all: CMakeFiles/screen-worms-server.dir/all
+all: CMakeFiles/random.dir/all
 
 .PHONY : all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/screen-worms-server.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/rafal/sik/sik2/CMakeFiles 4
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/screen-worms-server.dir/all
+CMakeFiles/random.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/rafal/sik/sik2/CMakeFiles 2
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/random.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/rafal/sik/sik2/CMakeFiles 0
-.PHONY : CMakeFiles/screen-worms-server.dir/rule
+.PHONY : CMakeFiles/random.dir/rule
 
 # Convenience name for target.
-screen-worms-server: CMakeFiles/screen-worms-server.dir/rule
+random: CMakeFiles/random.dir/rule
 
-.PHONY : screen-worms-server
-
-# clean rule for target.
-CMakeFiles/screen-worms-server.dir/clean:
-	$(MAKE) -f CMakeFiles/screen-worms-server.dir/build.make CMakeFiles/screen-worms-server.dir/clean
-.PHONY : CMakeFiles/screen-worms-server.dir/clean
+.PHONY : random
 
 # clean rule for target.
-clean: CMakeFiles/screen-worms-server.dir/clean
+CMakeFiles/random.dir/clean:
+	$(MAKE) -f CMakeFiles/random.dir/build.make CMakeFiles/random.dir/clean
+.PHONY : CMakeFiles/random.dir/clean
+
+# clean rule for target.
+clean: CMakeFiles/random.dir/clean
+
+.PHONY : clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/server-to-client.dir
+
+# All Build rule for target.
+CMakeFiles/server-to-client.dir/all:
+	$(MAKE) -f CMakeFiles/server-to-client.dir/build.make CMakeFiles/server-to-client.dir/depend
+	$(MAKE) -f CMakeFiles/server-to-client.dir/build.make CMakeFiles/server-to-client.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/rafal/sik/sik2/CMakeFiles --progress-num=13,14 "Built target server-to-client"
+.PHONY : CMakeFiles/server-to-client.dir/all
+
+# Include target in all.
+all: CMakeFiles/server-to-client.dir/all
+
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/server-to-client.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/rafal/sik/sik2/CMakeFiles 2
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/server-to-client.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/rafal/sik/sik2/CMakeFiles 0
+.PHONY : CMakeFiles/server-to-client.dir/rule
+
+# Convenience name for target.
+server-to-client: CMakeFiles/server-to-client.dir/rule
+
+.PHONY : server-to-client
+
+# clean rule for target.
+CMakeFiles/server-to-client.dir/clean:
+	$(MAKE) -f CMakeFiles/server-to-client.dir/build.make CMakeFiles/server-to-client.dir/clean
+.PHONY : CMakeFiles/server-to-client.dir/clean
+
+# clean rule for target.
+clean: CMakeFiles/server-to-client.dir/clean
 
 .PHONY : clean
 

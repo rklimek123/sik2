@@ -32,7 +32,4 @@ constexpr int64_t MAX_ROUNDS_PER_SEC = 200;
 constexpr int64_t MAX_BOARD_WIDTH    = 4000;
 constexpr int64_t MAX_BOARD_HEIGHT   = 4000;
 
-
-using player_number_t = uint8_t;
-
 #endif /* TYPES_H */

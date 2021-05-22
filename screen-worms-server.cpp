@@ -1,3 +1,4 @@
+#include <arpa/inet.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -7,14 +8,22 @@
 #include <unistd.h>
 
 #include <iostream>
+#include <set>
 #include <string>
+#include <utility>
 
 #include "client-to-server.h"
+#include "server-to-client.h"
 #include "err.h"
 #include "game-state.h"
+#include "player.h"
 #include "types.h"
 
 namespace {
+    typedef struct client_info {
+
+    } client_info_t;
+
     constexpr const char* program_arguments = "p:s:t:v:w:h:";
 
     port_t           port           = DEFAULT_PORT;
@@ -24,9 +33,12 @@ namespace {
     dimensions_t     board_width    = DEFAULT_BOARD_WIDTH;
     dimensions_t     board_height   = DEFAULT_BOARD_HEIGHT;
 
+    int listen_socket;
+    player_number_t ready_players = 0;
+    player_number_t connected_players = 0;
+    player_number_t connected_clients = 0; // Active players and observers
 
-
-    //extern "C" void syserr(const char *fmt, ...);
+    extern "C" void syserr(const char *fmt, ...);
 
 
     void parse_port(const char* num_str) {
@@ -181,36 +193,48 @@ namespace {
     }
 
 
-    int set_up_listen_sock() {
-        int sock;
+    void set_up_listen_socket() {
+    /*
         struct sockaddr_in6 addr;
 
-        sock = socket(AF_INET6, SOCK_DGRAM, 0);
-        if (sock < 0) {
+        listen_socket = socket(AF_INET6, SOCK_DGRAM, 0);
+        if (listen_socket < 0) {
             syserr("socket");
-        }
-
-        if (fcntl(sock, F_SETFL, O_NONBLOCK) != 0) {
-            syserr("fcntl non-blocking")
         }
         
         addr.sin6_family = AF_INET6;
         addr.sin6_addr = in6addr_any;
         addr.sin6_port = htons(port);
-        
-        if (bind(sock, (struct sockaddr *) &addr, (socklen_t) sizeof(addr)) < 0) {
-            syserr("bind");
+    */
+        struct sockaddr_in addr;
+
+        listen_socket = socket(AF_INET, SOCK_DGRAM, 0);
+        if (listen_socket < 0) {
+            syserr("socket");
         }
         
-        return sock;
+        addr.sin_family = AF_INET;
+        addr.sin_addr.s_addr = htonl(INADDR_ANY);
+        addr.sin_port = htons(port);
+
+        if (bind(listen_socket, (struct sockaddr *) &addr, (socklen_t) sizeof(addr)) < 0) {
+            syserr("bind");
+        }
     }
 
+    void set_nonblock(bool turn) {
+        int flags = fcntl(listen_socket, F_GETFL, 0);
+        flags = turn ? (flags | O_NONBLOCK) : (flags & ~O_NONBLOCK);
+        if (fcntl(listen_socket, F_SETFL, flags) != 0)
+            syserr("fcntl switch nonblocking");
+    }
 
-    void gather_players(int sock) {
+/*
+    std::set<cts_t> get_from_clients(bool game_started) {
         cts_t req;
         int ret = 1;
         while (ret != READ_COMPLETE) {
-            int ret = read_from_client(sock, req);
+            int ret = read_from_client(listen_socket, req);
             if (ret == READ_ERROR) {
                 syserr("read client");
             }
@@ -218,23 +242,63 @@ namespace {
                 
             }
         }
+        
+        std::set<cts_t> retu;
+        return retu;
     }
+
+
+    void gather_players() {
+        while (!(connected_players > 2 && connected_players == ready_players)) {
+            cts_t req;
+            int ret = read_from_client(listen_socket, req);
+
+            if (ret == READ_ERROR) {
+                syserr("read client");
+            }
+            else if (ret == READ_INVALID) {
+                
+            }
+        }
+
+        if (fcntl(listen_socket, F_SETFL, O_NONBLOCK) < 0)
+            syserr("fcntl");
+    }
+    */
 }
 
 int main(int argc, char* argv[]) {
     int listen_sock;
-    int multicast_sock;
 
     parse_input_parameters(argc, argv);
-    listen_sock = set_up_listen_sock();
-
-
+    set_up_listen_socket();
+    
+    bool l = false;
     for (;;) {
-        gather_players(listen_sock);
+        //gather_players();
+        cts_t req;
+        int ret = read_from_client(listen_socket, req, false);
+        if (ret > 0 || ret == READ_INVALID) {
+            std::pair<uint64_t, uint16_t> cl;
+            sockaddr_in sa = *(sockaddr_in*)(&req.client_address);
+            cl.first = sa.sin_addr.s_addr;
+            cl.second = sa.sin_port;
 
-        
-        
+            if (setting.find(cl) != setting.end()) {
+                std::cout << "Has read a thingie!\n";
+            }
+            else {
+                setting.insert(cl);
+                std::cout << "new boi\n";
+            }
+            
+            sockaddr_in s = *(sockaddr_in*)(&req.client_address);
+            std::cout << "Connection from " << inet_ntoa(s.sin_addr) << ":" << ntohs(s.sin_port) << " lol\n";
+            send_to_client_blank(listen_socket, &req.client_address, req.client_addr_len);
+        }
+        usleep(1000 * CLIENT_REQUEST_DELAY_MS);
+        std::cout << "Poll loop finished\n";
     }
 
-    //GameState game(seed, turning_speed, board_width, board_height);
+    // GameState game(seed, turning_speed, board_width, board_height);
 }

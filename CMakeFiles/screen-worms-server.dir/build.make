@@ -91,6 +91,8 @@ screen__worms__server_EXTERNAL_OBJECTS =
 screen-worms-server: CMakeFiles/screen-worms-server.dir/screen-worms-server.cpp.o
 screen-worms-server: CMakeFiles/screen-worms-server.dir/build.make
 screen-worms-server: liberr.a
+screen-worms-server: libclient-to-server.a
+screen-worms-server: libserver-to-client.a
 screen-worms-server: CMakeFiles/screen-worms-server.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/rafal/sik/sik2/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable screen-worms-server"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/screen-worms-server.dir/link.txt --verbose=$(VERBOSE)

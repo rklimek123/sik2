@@ -32,13 +32,13 @@ namespace {
     }
 }
 
-int read_from_client(int listen_sock, cts_t& req) {
+int read_from_client(int listen_sock, cts_t& req, bool noblock) {
     char buffer[CLIENT_MAX_SIZE + 1];
     memset(buffer, 0, CLIENT_MAX_SIZE + 1);
 
-    int ret = read(listen_sock, buffer, CLIENT_MAX_SIZE);
+    int ret = recvfrom(listen_sock, buffer, CLIENT_MAX_SIZE, 0, &(req.client_address), &(req.client_addr_len));
     if (ret == -1) {
-        if (errno == EAGAIN || errno == EWOULDBLOCK)
+        if (noblock && (errno == EAGAIN || errno == EWOULDBLOCK))
             return READ_COMPLETE;
         else
             return READ_ERROR;
@@ -47,10 +47,8 @@ int read_from_client(int listen_sock, cts_t& req) {
         return READ_INVALID;
     }
 
-    if (parse_from_client_request(buffer, req)) {
+    if (parse_from_client_request(buffer, req))
         return ret;
-    }
-    else {
+    else
         return READ_INVALID;
-    }
 }
