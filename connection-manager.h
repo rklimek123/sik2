@@ -13,6 +13,8 @@
 #include <utility>
 
 #include "client-to-server.h"
+#include "server-to-client.h"
+#include "game-state.h"
 #include "types.h"
 
 constexpr int CLIENT_TIMEOUT_MS = 2000;
@@ -105,6 +107,7 @@ class ConnectionManager {
 
         ConnectionManager();
 
+        void broadcast(int sock, GameState& game, event_no_t begin_event, event_no_t end_event);
         void check_activity();
         bool handle_request_nogame(const cts_t& req);
         void prepare_for_new_game();

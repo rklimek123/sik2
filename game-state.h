@@ -57,6 +57,7 @@ class GameState {
         event_no_t event_log_len() const;
         event_no_t event_start_newgame(const std::set<std::string>& playernames);
         uint32_t get_game_id() const;
+        size_t get_event_at(event_no_t index, void** out);
         event_no_t next_turn();
     
     private:

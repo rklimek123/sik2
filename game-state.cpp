@@ -81,6 +81,11 @@ uint32_t GameState::get_game_id() const {
     return game_id;
 }
 
+size_t GameState::get_event_at(event_no_t index, void** out) {
+    *out = events[index].sendable;
+    return events[index].sendable_size;
+}
+
 event_no_t GameState::next_turn() {
 
 }

@@ -14,9 +14,7 @@
 #include <cstring>
 #include <string>
 
-struct stc_t {
-    
-};
+constexpr size_t MAX_BYTES_IN_STC_COMM = 550;
 
 int send_to_client_blank(int listen_sock, const sockaddr* address, socklen_t addr_len);
 

@@ -9,10 +9,64 @@ namespace {
         uint64_t nanoseconds = std::chrono::duration<uint64_t, std::nano>(a-b).count();
         return nanoseconds / 1e6;
     }
+
+    std::vector<std::pair<char*, size_t>>
+    get_chopped_coms(GameState& game, event_no_t begin_event, event_no_t end_event) {
+        std::vector<std::pair<char*, size_t>> result;
+        uint32_t game_id = htonl(game.get_game_id());
+        
+        event_no_t current_event = begin_event;
+        char* chopped = (char*)malloc(MAX_BYTES_IN_STC_COMM);
+        if (!chopped) throw new std::runtime_error("Buffer malloc error");
+        size_t chopped_size = 0;
+
+        uint32_t* chopped32 = (uint32_t*)chopped;
+        chopped32[0] = game_id;
+        chopped_size += sizeof(uint32_t);
+
+        while (current_event <= end_event) {
+            void* event_content;
+            size_t event_size = game.get_event_at(current_event, &event_content));
+
+            if (chopped_size + event_size > MAX_BYTES_IN_STC_COMM) {
+                result.push_back(std::make_pair(chopped, chopped_size));
+                chopped = (char*)malloc(MAX_BYTES_IN_STC_COMM);
+                if (!chopped) throw new std::runtime_error("Buffer malloc error");
+                chopped_size = 0;
+
+                chopped32 = (uint32_t*)chopped;
+                chopped32[0] = game_id;
+                chopped_size += sizeof(uint32_t);
+            }
+
+            char* event_bytes = (char*)event_content;
+            for (size_t i = 0; i < event_size; ++i) {
+                chopped[chopped_size++] = event_bytes[i];
+            }
+        }
+
+        result.push_back(std::make_pair(chopped, chopped_size));
+    }
 }
 
 player_number_t ConnectionManager::connected_players_count() const {
     return connected_players;
+}
+
+void ConnectionManager::broadcast(int sock, GameState& game, event_no_t begin_event, event_no_t end_event) {
+    std::vector<std::pair<char*, size_t>> coms = get_chopped_coms(game, begin_event, end_event);
+    
+    for (const std::pair<char*, size_t>& com: coms) {
+        for (map_iter it = connections.begin(); it != connections.end(); ++it) {
+            size_t ret =
+                sendto(sock, com.first, com.second, 0, &(it->first), it->second.addr_len);
+            
+            if (ret != com.second)
+                throw new std::runtime_error("Sendto error");
+        }
+
+        free(com.first);
+    }
 }
 
 void ConnectionManager::check_activity() {

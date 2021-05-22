@@ -275,7 +275,6 @@ int main(int argc, char* argv[]) {
         event_no_t current_event =
             game.event_start_newgame(connection_manager.playernames);
         
-        connection_manager.broadcast(listen_socket, game_id, 0, current_event);
-
+        connection_manager.broadcast(listen_socket, game, 0, current_event);
     }
 }
