@@ -34,7 +34,7 @@ struct Player {
 
 class GameState {
     public:
-        GameState(Random& rng_,
+        GameState(Random* rng_,
                   turn_speed_t turning_speed_,
                   dimensions_t board_width_,
                   dimensions_t board_height_,
@@ -46,7 +46,7 @@ class GameState {
             number_of_players(players_),
             alive_players(players_)
         {
-            game_id = rng.rand();
+            game_id = rng->rand();
 
             for (dimensions_t x = 0; x < board_width; ++x) {
                 std::vector<bool> collumn;
@@ -61,7 +61,7 @@ class GameState {
         event_no_t event_log_len() const;
         event_no_t event_start_newgame(const std::set<std::string>& playernames);
         uint32_t get_game_id() const;
-        size_t get_event_at(event_no_t index, void** out);
+        size_t get_event_at(event_no_t index, void** out) const;
         event_no_t next_turn();
         bool try_change_turning(player_number_t player_index, turn_direction_t turn_direction);
 
@@ -69,6 +69,8 @@ class GameState {
     
     private:
         std::vector<std::vector<bool>> board;
+
+        Random* rng;
 
         turn_speed_t turning_speed;
         dimensions_t board_width;
@@ -82,8 +84,6 @@ class GameState {
         uint32_t game_id;
         event_no_t next_event_no = 0;
         std::vector<event_t> events;
-
-        Random& rng;
 
         bool has_ended = false;
 

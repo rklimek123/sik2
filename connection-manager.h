@@ -38,8 +38,8 @@ namespace sockaddr_compare {
     bool comp_addr6(const sockaddr_in6& a, const sockaddr_in6& b) {
         bool result = false;
 
-        uint32_t a_addr[] = a.sin6_addr.s6_addr32;
-        uint32_t b_addr[] = b.sin6_addr.s6_addr32;
+        const uint32_t* a_addr = a.sin6_addr.s6_addr32;
+        const uint32_t* b_addr = b.sin6_addr.s6_addr32;
 
         for (int i = 0; i < 4; ++i) {
             if (a_addr[i] < b_addr[i]) {
@@ -121,7 +121,7 @@ class ConnectionManager {
         player_number_t connected_players_count() const;
         int index_ingame(const sockaddr& addr) const;
 
-        int send_to_client_blank(int listen_sock, const sockaddr* address, socklen_t addr_len);
+        void send_to_client_blank(int listen_sock, const sockaddr* address, socklen_t addr_len);
 
         std::set<std::string> playernames;
     

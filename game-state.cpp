@@ -64,7 +64,7 @@ void GameState::generate_gameover_event() {
 }
 
 void GameState::eat_pixel(player_number_t player, dimensions_t x, dimensions_t y) {
-    if (x < 0 || x >= board_width || y < 0 || y >= board_height || board[x][y]) {
+    if (x >= board_width || y >= board_height || board[x][y]) {
         players[player].is_dead = true;
         generate_player_eliminated_event(player);
         --alive_players;
@@ -78,10 +78,10 @@ void GameState::eat_pixel(player_number_t player, dimensions_t x, dimensions_t y
 event_no_t GameState::event_start_newgame(const std::set<std::string>& playernames) {
     generate_newgame_event(playernames);
     for (player_number_t i = 0; i < number_of_players; ++i) {
-        double x = (double)(rng.rand() % board_width) + 0.5;
-        double y = (double)(rng.rand() % board_height) + 0.5;
+        double x = (double)(rng->rand() % board_width) + 0.5;
+        double y = (double)(rng->rand() % board_height) + 0.5;
 
-        Player p(x, y, rng.rand() % 360);
+        Player p(x, y, rng->rand() % 360);
         eat_pixel(i, (dimensions_t)x, (dimensions_t)y);
     }
 
@@ -92,7 +92,7 @@ uint32_t GameState::get_game_id() const {
     return game_id;
 }
 
-size_t GameState::get_event_at(event_no_t index, void** out) {
+size_t GameState::get_event_at(event_no_t index, void** out) const {
     *out = events[index].sendable;
     return events[index].sendable_size;
 }

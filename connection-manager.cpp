@@ -41,6 +41,7 @@ namespace {
         }
 
         result.push_back(std::make_pair(chopped, chopped_size));
+        return result;
     }
 }
 
@@ -147,7 +148,7 @@ void ConnectionManager::add_connection(const cts_t& req) {
 
     new_con.addr_len = req.client_addr_len;
 
-    auto result = connections.insert(std::make_pair(req.client_address, new_con));
+    connections.insert(std::make_pair(req.client_address, new_con));
     ++connected_clients;
 
     if (new_con.is_player) {
@@ -295,7 +296,7 @@ void ConnectionManager::end_game() {
     }
 }
 
-int ConnectionManager::send_to_client_blank(int listen_sock,
+void ConnectionManager::send_to_client_blank(int listen_sock,
                          const sockaddr* address,
                          socklen_t addr_len) {
     

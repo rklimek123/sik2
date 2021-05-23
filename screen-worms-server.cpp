@@ -21,10 +21,6 @@
 #include "types.h"
 
 namespace {
-    typedef struct client_info {
-
-    } client_info_t;
-
     constexpr const char* program_arguments = "p:s:t:v:w:h:";
 
     port_t           port           = DEFAULT_PORT;
@@ -108,7 +104,7 @@ namespace {
 
         if (unrefined_num >= MIN_ROUNDS_PER_SEC && unrefined_num <= MAX_ROUNDS_PER_SEC) {
             rounds_per_sec = (rounds_per_sec_t)unrefined_num;
-            time_between_turn = ;
+            ticks_between_turn = 1000000000 / rounds_per_sec;
         }
         else {
             std::cerr << "The supplied rounds per second must fit between "
@@ -193,13 +189,20 @@ namespace {
     }
 
 
+    void set_nonblock(bool turn) {
+        int flags = fcntl(listen_socket, F_GETFL, 0);
+        flags = turn ? (flags | O_NONBLOCK) : (flags & ~O_NONBLOCK);
+        if (fcntl(listen_socket, F_SETFL, flags) != 0)
+            throw new std::runtime_error("Fcntl switch nonblocking error");
+    }
+
     void set_up_listen_socket() {
     /*
         struct sockaddr_in6 addr;
 
         listen_socket = socket(AF_INET6, SOCK_DGRAM, 0);
         if (listen_socket < 0) {
-            syserr("socket");
+            throw new std::runtime_error("Set up listen socket error");
         }
         
         addr.sin6_family = AF_INET6;
@@ -210,7 +213,7 @@ namespace {
 
         listen_socket = socket(AF_INET, SOCK_DGRAM, 0);
         if (listen_socket < 0) {
-            syserr("socket");
+            throw new std::runtime_error("Set up listen socket error");
         }
         
         addr.sin_family = AF_INET;
@@ -218,17 +221,10 @@ namespace {
         addr.sin_port = htons(port);
 
         if (bind(listen_socket, (struct sockaddr *) &addr, (socklen_t) sizeof(addr)) < 0) {
-            syserr("bind");
+            throw new std::runtime_error("Socket bind error");
         }
 
         set_nonblock(true);
-    }
-
-    void set_nonblock(bool turn) {
-        int flags = fcntl(listen_socket, F_GETFL, 0);
-        flags = turn ? (flags | O_NONBLOCK) : (flags & ~O_NONBLOCK);
-        if (fcntl(listen_socket, F_SETFL, flags) != 0)
-            syserr("fcntl switch nonblocking");
     }
 
 
@@ -303,10 +299,8 @@ namespace {
 }
 
 int main(int argc, char* argv[]) {
-    int listen_sock;
-
     parse_input_parameters(argc, argv);
-    Random rng(seed);
+    Random* rng = new Random(seed);
 
     set_up_listen_socket();
     
@@ -335,4 +329,6 @@ int main(int argc, char* argv[]) {
             set_up_listen_socket();
         }
     }
+
+    delete rng;
 }

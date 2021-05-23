@@ -1,2 +1,0 @@
-/usr/bin/ar qc libcrc32.a  CMakeFiles/crc32.dir/crc32.c.o
-/usr/bin/ranlib libcrc32.a
