@@ -265,7 +265,8 @@ namespace {
                 connection_manager.handle_request_nogame(req);
             }
             else {
-                connection_manager.handle_request_game(game, req);
+                connection_manager.handle_request_game(
+                    game, req, (player_number_t)player_index_r);
             }
 
             connection_manager.attempt_client_reply(listen_socket,

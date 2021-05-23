@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 
+#include "client-to-server.h"
 #include "err.h"
 #include "event-parser.h"
 #include "random.h"
@@ -24,7 +25,7 @@ struct Player {
     double x;
     double y;
     short oriented;
-    int last_turn_direction = TURN_STRAIGHT;
+    turn_direction_t last_turn_direction = TURN_STRAIGHT;
     bool is_dead;
 };
 
@@ -60,6 +61,7 @@ class GameState {
         uint32_t get_game_id() const;
         size_t get_event_at(event_no_t index, void** out);
         event_no_t next_turn();
+        bool try_change_turning(player_number_t player_index, turn_direction_t turn_direction);
 
         bool has_finished() const;
     

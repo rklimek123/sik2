@@ -115,6 +115,7 @@ class ConnectionManager {
                                   const cts_t& req,
                                   const GameState& game);
         bool handle_request_nogame(const cts_t& req);
+        void handle_request_game(GameState& game, const cts_t& req,  player_number_t player_index);
         void prepare_for_new_game();
 
         player_number_t connected_players_count() const;

@@ -248,6 +248,20 @@ bool ConnectionManager::handle_request_nogame(const cts_t& req) {
     return connected_players >= 2 && ready_players == connected_players;
 }
 
+void ConnectionManager::handle_request_game(
+    GameState& game, const cts_t& req, player_number_t player_index) {
+
+    const sockaddr& addr = req.client_address;
+    
+    map_iter con = connections.find(addr);
+    if (con != connections.end()) {
+        throw new std::runtime_error("Handle request game invalid connection");
+    }
+    else {
+        game.try_change_turning(player_index, req.turn_direction);
+    }
+}
+
 player_number_t ConnectionManager::get_player_index(const std::string& playername) const {
     const auto& it = playernames.find(playername);
     if (it == playernames.end()) {

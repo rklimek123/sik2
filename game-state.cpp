@@ -90,6 +90,22 @@ event_no_t GameState::next_turn() {
 
 }
 
+bool GameState::try_change_turning(player_number_t player_index,
+                                   turn_direction_t turn_direction) {
+    bool result = false;
+    if (player_index >= number_of_players ||
+        players[player_index].is_dead) {
+        
+        result = false;
+    }
+    else {
+        players[player_index].last_turn_direction = turn_direction;
+        result = true;
+    }
+
+    return result;
+}
+
 bool GameState::has_finished() const {
     return has_ended;
 }
