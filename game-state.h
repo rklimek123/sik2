@@ -24,6 +24,7 @@ struct Player {
     double x;
     double y;
     short oriented;
+    int last_turn_direction = TURN_STRAIGHT;
     bool is_dead;
 };
 
@@ -59,6 +60,8 @@ class GameState {
         uint32_t get_game_id() const;
         size_t get_event_at(event_no_t index, void** out);
         event_no_t next_turn();
+
+        bool has_finished() const;
     
     private:
         std::vector<std::vector<bool>> board;
@@ -77,6 +80,8 @@ class GameState {
         std::vector<event_t> events;
 
         Random& rng;
+
+        bool has_ended = false;
 
         void eat_pixel(player_number_t player, dimensions_t x, dimensions_t y);
         

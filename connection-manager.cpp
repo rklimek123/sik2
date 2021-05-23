@@ -5,13 +5,8 @@ namespace {
     constexpr int VERIFY_OK      = 0;
     constexpr int VERIFY_IGNORE  = 1;
 
-    int delay_ms(const TimePoint& a, const TimePoint& b) {
-        uint64_t nanoseconds = std::chrono::duration<uint64_t, std::nano>(a-b).count();
-        return nanoseconds / 1e6;
-    }
-
     std::vector<std::pair<char*, size_t>>
-    get_chopped_coms(GameState& game, event_no_t begin_event, event_no_t end_event) {
+    get_chopped_coms(const GameState& game, event_no_t begin_event, event_no_t end_event) {
         std::vector<std::pair<char*, size_t>> result;
         uint32_t game_id = htonl(game.get_game_id());
         
@@ -26,7 +21,7 @@ namespace {
 
         while (current_event <= end_event) {
             void* event_content;
-            size_t event_size = game.get_event_at(current_event, &event_content));
+            size_t event_size = game.get_event_at(current_event++, &event_content);
 
             if (chopped_size + event_size > MAX_BYTES_IN_STC_COMM) {
                 result.push_back(std::make_pair(chopped, chopped_size));
@@ -53,19 +48,37 @@ player_number_t ConnectionManager::connected_players_count() const {
     return connected_players;
 }
 
-void ConnectionManager::broadcast(int sock, GameState& game, event_no_t begin_event, event_no_t end_event) {
-    std::vector<std::pair<char*, size_t>> coms = get_chopped_coms(game, begin_event, end_event);
-    
-    for (const std::pair<char*, size_t>& com: coms) {
-        for (map_iter it = connections.begin(); it != connections.end(); ++it) {
-            size_t ret =
-                sendto(sock, com.first, com.second, 0, &(it->first), it->second.addr_len);
-            
-            if (ret != com.second)
-                throw new std::runtime_error("Sendto error");
+int ConnectionManager::index_ingame(const sockaddr& addr) const {
+    int result = -1;
+    auto it = connections.find(addr);
+    if (it == connections.end()) {
+        result = -1;
+    }
+    else {
+        if (it->second.in_game) {
+            result = it->second.player_number;
         }
+    }
 
-        free(com.first);
+    return result;
+}
+
+void ConnectionManager::broadcast(int sock, GameState& game, event_no_t begin_event, event_no_t end_event) {
+    end_event = std::min(game.event_log_len() - 1, end_event);
+
+    if (begin_event <= end_event) {
+        std::vector<std::pair<char*, size_t>> coms = get_chopped_coms(game, begin_event, end_event);
+        for (const std::pair<char*, size_t>& com: coms) {
+            for (map_iter it = connections.begin(); it != connections.end(); ++it) {
+                size_t ret =
+                    sendto(sock, com.first, com.second, 0, &(it->first), it->second.addr_len);
+                
+                if (ret != com.second)
+                    throw new std::runtime_error("Sendto error");
+            }
+
+            free(com.first);
+        }
     }
 }
 
@@ -78,6 +91,42 @@ void ConnectionManager::check_activity() {
         }
         else {
             ++it;
+        }
+    }
+}
+
+void ConnectionManager::attempt_client_reply(int sock,
+                                             const cts_t& req,
+                                             const GameState& game) {
+    map_iter it = connections.find(req.client_address);
+    if (it != connections.end()) {
+        const con_state_t& con_stat = it->second;
+        int ret = verify_connection(con_stat, req);
+        if (ret == VERIFY_REPLACE) {
+            remove_connection(it);
+            add_connection(req);
+        }
+        if (ret != VERIFY_IGNORE) {
+            event_no_t begin_event = req.next_expected_event_no;
+            event_no_t end_event = game.event_log_len() - 1;
+
+            if (begin_event <= end_event) {
+                std::vector<std::pair<char*, size_t>> coms =
+                    get_chopped_coms(game, begin_event, end_event);
+        
+                for (const std::pair<char*, size_t>& com: coms) {
+                    size_t ret =
+                        sendto(sock, com.first, com.second, 0, &(it->first), it->second.addr_len);
+                        
+                    if (ret != com.second)
+                        throw new std::runtime_error("Sendto error");
+
+                    free(com.first);
+                }
+            }
+            else {
+                send_to_client_blank(sock, &req.client_address, req.client_addr_len);
+            }
         }
     }
 }
@@ -220,4 +269,12 @@ void ConnectionManager::prepare_for_new_game() {
     }
 
     ready_players = 0;
+}
+
+int ConnectionManager::send_to_client_blank(int listen_sock,
+                         const sockaddr* address,
+                         socklen_t addr_len) {
+    
+    if (connections.find(*address) != connections.end())
+        sendto(listen_sock, NULL, 0, 0, address, addr_len);
 }

@@ -7,6 +7,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 
+#include <chrono>
 #include <iostream>
 #include <set>
 #include <string>
@@ -15,7 +16,6 @@
 #include "client-to-server.h"
 #include "server-to-client.h"
 #include "connection-manager.h"
-#include "err.h"
 #include "event-parser.h"
 #include "game-state.h"
 #include "random.h";
@@ -37,10 +37,9 @@ namespace {
 
     int listen_socket;
 
-    extern "C" void syserr(const char *fmt, ...);
-
     ConnectionManager connection_manager;
 
+    uint64_t ticks_between_turn;
 
     void parse_port(const char* num_str) {
         char* res;
@@ -110,6 +109,7 @@ namespace {
 
         if (unrefined_num >= MIN_ROUNDS_PER_SEC && unrefined_num <= MAX_ROUNDS_PER_SEC) {
             rounds_per_sec = (rounds_per_sec_t)unrefined_num;
+            time_between_turn = ;
         }
         else {
             std::cerr << "The supplied rounds per second must fit between "
@@ -240,21 +240,68 @@ namespace {
             connection_manager.check_activity();
 
             cts_t req;
-            int ret = read_from_client(listen_socket, req, false);
+            int ret = read_from_client(listen_socket, req);
             if (ret > 0) {
                 need_start = connection_manager.handle_request_nogame(req);
-                send_to_client_blank(listen_socket, &req.client_address, req.client_addr_len);
+                connection_manager.send_to_client_blank(listen_socket,
+                                                        &req.client_address,
+                                                        req.client_addr_len);
+            }
+            else if (ret == READ_ERROR) {
+                throw new std::runtime_error("Read from client failed");
             }
 
             if (!need_start)
                 usleep(1000 * CLIENT_REQUEST_DELAY_MS);
         }
     }
+
+    void receive_client_request(GameState& game) {
+        cts_t req;
+        int ret = read_from_client(listen_socket, req);
+        if (ret > 0) {
+            int player_index_r = connection_manager.index_ingame(req.client_address);
+            if (player_index_r == -1) {
+                connection_manager.handle_request_nogame(req);
+            }
+            else {
+                connection_manager.handle_request_game(game, req);
+            }
+
+            connection_manager.attempt_client_reply(listen_socket,
+                                                    req,
+                                                    game);
+        }
+        else if (ret == READ_ERROR) {
+            throw new std::runtime_error("Read from client failed");
+        }
+    }
+
+    void execute_turns(GameState& game, event_no_t next_expected_event) {
+        TimePoint last_turn = Clock::now();
+
+        while (!game.has_finished()) {
+            while (delay_ns(Clock::now(), last_turn) < ticks_between_turn) {
+                receive_client_request(game);
+            }
+
+            last_turn = Clock::now();
+
+            connection_manager.check_activity();
+            event_no_t next_event = game.next_turn();
+            if (next_event >= next_expected_event) {
+                connection_manager.broadcast(listen_socket,
+                                             game,
+                                             next_expected_event,
+                                             next_event);
+                next_expected_event = next_event + 1;
+            }
+        }
+    }
 }
 
 int main(int argc, char* argv[]) {
     int listen_sock;
-    uint32_t game_id;
 
     parse_input_parameters(argc, argv);
     Random rng(seed);
@@ -262,19 +309,26 @@ int main(int argc, char* argv[]) {
     set_up_listen_socket();
     
     for (;;) {
-        gather_players();
-        connection_manager.prepare_for_new_game();
-        GameState game(rng,
-                       turning_speed,
-                       board_width,
-                       board_height,
-                       connection_manager.connected_players_count());
-        
-        game_id = game.get_game_id();
-        
-        event_no_t current_event =
-            game.event_start_newgame(connection_manager.playernames);
-        
-        connection_manager.broadcast(listen_socket, game, 0, current_event);
+        try {
+            gather_players();
+            connection_manager.prepare_for_new_game();
+            GameState game(rng,
+                        turning_speed,
+                        board_width,
+                        board_height,
+                        connection_manager.connected_players_count());
+
+            event_no_t current_event =
+                game.event_start_newgame(connection_manager.playernames);
+            
+            connection_manager.broadcast(listen_socket, game, 0, current_event);
+            execute_turns(game, current_event + 1);
+        }
+        catch (std::exception& e) {
+            std::cout << e.what() << std::endl;
+            connection_manager = ConnectionManager();
+            close(listen_socket);
+            set_up_listen_socket();
+        }
     }
 }

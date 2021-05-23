@@ -46,6 +46,6 @@ struct cts_t {
 
 constexpr int CLIENT_REQUEST_DELAY_MS = 30;
 
-int read_from_client(int listen_sock, cts_t& req, bool noblock);
+int read_from_client(int listen_sock, cts_t& req);
 
 #endif /* CLIENT_TO_SERVER_H */

@@ -89,3 +89,7 @@ size_t GameState::get_event_at(event_no_t index, void** out) {
 event_no_t GameState::next_turn() {
 
 }
+
+bool GameState::has_finished() const {
+    return has_ended;
+}

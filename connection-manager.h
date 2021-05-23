@@ -4,6 +4,7 @@
 #include <sys/socket.h>
 #include <stdint.h>
 
+#include <algorithm>
 #include <chrono>
 #include <cstdlib>
 #include <map>
@@ -19,6 +20,7 @@
 
 constexpr int CLIENT_TIMEOUT_MS = 2000;
 constexpr unsigned int CLIENT_MAX_AMOUNT = 25;
+constexpr size_t MAX_BYTES_IN_STC_COMM = 550;
 
 struct con_state_t {
     session_id_t session_id;
@@ -109,10 +111,16 @@ class ConnectionManager {
 
         void broadcast(int sock, GameState& game, event_no_t begin_event, event_no_t end_event);
         void check_activity();
+        void attempt_client_reply(int sock,
+                                  const cts_t& req,
+                                  const GameState& game);
         bool handle_request_nogame(const cts_t& req);
         void prepare_for_new_game();
 
         player_number_t connected_players_count() const;
+        int index_ingame(const sockaddr& addr) const;
+
+        int send_to_client_blank(int listen_sock, const sockaddr* address, socklen_t addr_len);
 
         std::set<std::string> playernames;
     
