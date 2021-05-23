@@ -190,11 +190,20 @@ Project_SOURCE_DIR:STATIC=/home/rafal/sik/sik2
 //Dependencies for target
 client-to-server_LIB_DEPENDS:STATIC=
 
+//Dependencies for the target
+connection-manager_LIB_DEPENDS:STATIC=general;client-to-server;general;game-state;
+
+//Dependencies for target
+crc32_LIB_DEPENDS:STATIC=
+
 //Dependencies for target
 err_LIB_DEPENDS:STATIC=
 
-//Dependencies for target
-game-state_LIB_DEPENDS:STATIC=
+//Dependencies for the target
+event-parser_LIB_DEPENDS:STATIC=general;crc32;
+
+//Dependencies for the target
+game-state_LIB_DEPENDS:STATIC=general;client-to-server;general;event-parser;general;random;
 
 //Dependencies for target
 player_LIB_DEPENDS:STATIC=

@@ -19,6 +19,8 @@ netinet/in.h
 -
 netinet/ip6.h
 -
+chrono
+-
 endian.h
 -
 errno.h
@@ -30,5 +32,15 @@ unistd.h
 cstring
 -
 string
+-
+types.h
+/home/rafal/sik/sik2/types.h
+
+/home/rafal/sik/sik2/types.h
+stdint.h
+-
+unistd.h
+-
+chrono
 -
 

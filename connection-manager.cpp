@@ -58,6 +58,9 @@ int ConnectionManager::index_ingame(const sockaddr& addr) const {
         if (it->second.in_game) {
             result = it->second.player_number;
         }
+        else {
+            result = -1;
+        }
     }
 
     return result;
@@ -217,7 +220,7 @@ bool ConnectionManager::handle_request_nogame(const cts_t& req) {
     
     map_iter con = connections.find(addr);
     if (con != connections.end()) {
-        if (connected_clients >= CLIENT_MAX_AMOUNT &&
+        if (connected_clients < CLIENT_MAX_AMOUNT &&
             verify_unique_playername(req.player_name)) {
             
             add_connection(req);
@@ -283,6 +286,13 @@ void ConnectionManager::prepare_for_new_game() {
     }
 
     ready_players = 0;
+}
+
+void ConnectionManager::end_game() {
+    for (auto& con: connections) {
+        con_state_t& con_st = con.second;
+        con_st.in_game = false;
+    }
 }
 
 int ConnectionManager::send_to_client_blank(int listen_sock,

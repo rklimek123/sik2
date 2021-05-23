@@ -170,32 +170,6 @@ screen-worms-server/fast:
 .PHONY : screen-worms-server/fast
 
 #=============================================================================
-# Target rules for targets named err
-
-# Build rule for target.
-err: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 err
-.PHONY : err
-
-# fast build rule for target.
-err/fast:
-	$(MAKE) -f CMakeFiles/err.dir/build.make CMakeFiles/err.dir/build
-.PHONY : err/fast
-
-#=============================================================================
-# Target rules for targets named player
-
-# Build rule for target.
-player: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 player
-.PHONY : player
-
-# fast build rule for target.
-player/fast:
-	$(MAKE) -f CMakeFiles/player.dir/build.make CMakeFiles/player.dir/build
-.PHONY : player/fast
-
-#=============================================================================
 # Target rules for targets named client-to-server
 
 # Build rule for target.
@@ -209,17 +183,30 @@ client-to-server/fast:
 .PHONY : client-to-server/fast
 
 #=============================================================================
-# Target rules for targets named game-state
+# Target rules for targets named crc32
 
 # Build rule for target.
-game-state: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 game-state
-.PHONY : game-state
+crc32: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 crc32
+.PHONY : crc32
 
 # fast build rule for target.
-game-state/fast:
-	$(MAKE) -f CMakeFiles/game-state.dir/build.make CMakeFiles/game-state.dir/build
-.PHONY : game-state/fast
+crc32/fast:
+	$(MAKE) -f CMakeFiles/crc32.dir/build.make CMakeFiles/crc32.dir/build
+.PHONY : crc32/fast
+
+#=============================================================================
+# Target rules for targets named event-parser
+
+# Build rule for target.
+event-parser: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 event-parser
+.PHONY : event-parser
+
+# fast build rule for target.
+event-parser/fast:
+	$(MAKE) -f CMakeFiles/event-parser.dir/build.make CMakeFiles/event-parser.dir/build
+.PHONY : event-parser/fast
 
 #=============================================================================
 # Target rules for targets named random
@@ -235,17 +222,30 @@ random/fast:
 .PHONY : random/fast
 
 #=============================================================================
-# Target rules for targets named server-to-client
+# Target rules for targets named connection-manager
 
 # Build rule for target.
-server-to-client: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 server-to-client
-.PHONY : server-to-client
+connection-manager: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 connection-manager
+.PHONY : connection-manager
 
 # fast build rule for target.
-server-to-client/fast:
-	$(MAKE) -f CMakeFiles/server-to-client.dir/build.make CMakeFiles/server-to-client.dir/build
-.PHONY : server-to-client/fast
+connection-manager/fast:
+	$(MAKE) -f CMakeFiles/connection-manager.dir/build.make CMakeFiles/connection-manager.dir/build
+.PHONY : connection-manager/fast
+
+#=============================================================================
+# Target rules for targets named game-state
+
+# Build rule for target.
+game-state: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 game-state
+.PHONY : game-state
+
+# fast build rule for target.
+game-state/fast:
+	$(MAKE) -f CMakeFiles/game-state.dir/build.make CMakeFiles/game-state.dir/build
+.PHONY : game-state/fast
 
 client-to-server.o: client-to-server.cpp.o
 
@@ -274,32 +274,86 @@ client-to-server.cpp.s:
 	$(MAKE) -f CMakeFiles/client-to-server.dir/build.make CMakeFiles/client-to-server.dir/client-to-server.cpp.s
 .PHONY : client-to-server.cpp.s
 
-err.o: err.c.o
+connection-manager.o: connection-manager.cpp.o
 
-.PHONY : err.o
+.PHONY : connection-manager.o
 
 # target to build an object file
-err.c.o:
-	$(MAKE) -f CMakeFiles/err.dir/build.make CMakeFiles/err.dir/err.c.o
-.PHONY : err.c.o
+connection-manager.cpp.o:
+	$(MAKE) -f CMakeFiles/connection-manager.dir/build.make CMakeFiles/connection-manager.dir/connection-manager.cpp.o
+.PHONY : connection-manager.cpp.o
 
-err.i: err.c.i
+connection-manager.i: connection-manager.cpp.i
 
-.PHONY : err.i
+.PHONY : connection-manager.i
 
 # target to preprocess a source file
-err.c.i:
-	$(MAKE) -f CMakeFiles/err.dir/build.make CMakeFiles/err.dir/err.c.i
-.PHONY : err.c.i
+connection-manager.cpp.i:
+	$(MAKE) -f CMakeFiles/connection-manager.dir/build.make CMakeFiles/connection-manager.dir/connection-manager.cpp.i
+.PHONY : connection-manager.cpp.i
 
-err.s: err.c.s
+connection-manager.s: connection-manager.cpp.s
 
-.PHONY : err.s
+.PHONY : connection-manager.s
 
 # target to generate assembly for a file
-err.c.s:
-	$(MAKE) -f CMakeFiles/err.dir/build.make CMakeFiles/err.dir/err.c.s
-.PHONY : err.c.s
+connection-manager.cpp.s:
+	$(MAKE) -f CMakeFiles/connection-manager.dir/build.make CMakeFiles/connection-manager.dir/connection-manager.cpp.s
+.PHONY : connection-manager.cpp.s
+
+crc32.o: crc32.c.o
+
+.PHONY : crc32.o
+
+# target to build an object file
+crc32.c.o:
+	$(MAKE) -f CMakeFiles/crc32.dir/build.make CMakeFiles/crc32.dir/crc32.c.o
+.PHONY : crc32.c.o
+
+crc32.i: crc32.c.i
+
+.PHONY : crc32.i
+
+# target to preprocess a source file
+crc32.c.i:
+	$(MAKE) -f CMakeFiles/crc32.dir/build.make CMakeFiles/crc32.dir/crc32.c.i
+.PHONY : crc32.c.i
+
+crc32.s: crc32.c.s
+
+.PHONY : crc32.s
+
+# target to generate assembly for a file
+crc32.c.s:
+	$(MAKE) -f CMakeFiles/crc32.dir/build.make CMakeFiles/crc32.dir/crc32.c.s
+.PHONY : crc32.c.s
+
+event-parser.o: event-parser.cpp.o
+
+.PHONY : event-parser.o
+
+# target to build an object file
+event-parser.cpp.o:
+	$(MAKE) -f CMakeFiles/event-parser.dir/build.make CMakeFiles/event-parser.dir/event-parser.cpp.o
+.PHONY : event-parser.cpp.o
+
+event-parser.i: event-parser.cpp.i
+
+.PHONY : event-parser.i
+
+# target to preprocess a source file
+event-parser.cpp.i:
+	$(MAKE) -f CMakeFiles/event-parser.dir/build.make CMakeFiles/event-parser.dir/event-parser.cpp.i
+.PHONY : event-parser.cpp.i
+
+event-parser.s: event-parser.cpp.s
+
+.PHONY : event-parser.s
+
+# target to generate assembly for a file
+event-parser.cpp.s:
+	$(MAKE) -f CMakeFiles/event-parser.dir/build.make CMakeFiles/event-parser.dir/event-parser.cpp.s
+.PHONY : event-parser.cpp.s
 
 game-state.o: game-state.cpp.o
 
@@ -327,33 +381,6 @@ game-state.s: game-state.cpp.s
 game-state.cpp.s:
 	$(MAKE) -f CMakeFiles/game-state.dir/build.make CMakeFiles/game-state.dir/game-state.cpp.s
 .PHONY : game-state.cpp.s
-
-player.o: player.cpp.o
-
-.PHONY : player.o
-
-# target to build an object file
-player.cpp.o:
-	$(MAKE) -f CMakeFiles/player.dir/build.make CMakeFiles/player.dir/player.cpp.o
-.PHONY : player.cpp.o
-
-player.i: player.cpp.i
-
-.PHONY : player.i
-
-# target to preprocess a source file
-player.cpp.i:
-	$(MAKE) -f CMakeFiles/player.dir/build.make CMakeFiles/player.dir/player.cpp.i
-.PHONY : player.cpp.i
-
-player.s: player.cpp.s
-
-.PHONY : player.s
-
-# target to generate assembly for a file
-player.cpp.s:
-	$(MAKE) -f CMakeFiles/player.dir/build.make CMakeFiles/player.dir/player.cpp.s
-.PHONY : player.cpp.s
 
 random.o: random.cpp.o
 
@@ -409,33 +436,6 @@ screen-worms-server.cpp.s:
 	$(MAKE) -f CMakeFiles/screen-worms-server.dir/build.make CMakeFiles/screen-worms-server.dir/screen-worms-server.cpp.s
 .PHONY : screen-worms-server.cpp.s
 
-server-to-client.o: server-to-client.cpp.o
-
-.PHONY : server-to-client.o
-
-# target to build an object file
-server-to-client.cpp.o:
-	$(MAKE) -f CMakeFiles/server-to-client.dir/build.make CMakeFiles/server-to-client.dir/server-to-client.cpp.o
-.PHONY : server-to-client.cpp.o
-
-server-to-client.i: server-to-client.cpp.i
-
-.PHONY : server-to-client.i
-
-# target to preprocess a source file
-server-to-client.cpp.i:
-	$(MAKE) -f CMakeFiles/server-to-client.dir/build.make CMakeFiles/server-to-client.dir/server-to-client.cpp.i
-.PHONY : server-to-client.cpp.i
-
-server-to-client.s: server-to-client.cpp.s
-
-.PHONY : server-to-client.s
-
-# target to generate assembly for a file
-server-to-client.cpp.s:
-	$(MAKE) -f CMakeFiles/server-to-client.dir/build.make CMakeFiles/server-to-client.dir/server-to-client.cpp.s
-.PHONY : server-to-client.cpp.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -446,36 +446,36 @@ help:
 	@echo "... install/local"
 	@echo "... install"
 	@echo "... list_install_components"
-	@echo "... screen-worms-server"
-	@echo "... err"
 	@echo "... edit_cache"
-	@echo "... player"
+	@echo "... screen-worms-server"
 	@echo "... client-to-server"
-	@echo "... rebuild_cache"
-	@echo "... game-state"
+	@echo "... crc32"
+	@echo "... event-parser"
 	@echo "... random"
-	@echo "... server-to-client"
+	@echo "... rebuild_cache"
+	@echo "... connection-manager"
+	@echo "... game-state"
 	@echo "... client-to-server.o"
 	@echo "... client-to-server.i"
 	@echo "... client-to-server.s"
-	@echo "... err.o"
-	@echo "... err.i"
-	@echo "... err.s"
+	@echo "... connection-manager.o"
+	@echo "... connection-manager.i"
+	@echo "... connection-manager.s"
+	@echo "... crc32.o"
+	@echo "... crc32.i"
+	@echo "... crc32.s"
+	@echo "... event-parser.o"
+	@echo "... event-parser.i"
+	@echo "... event-parser.s"
 	@echo "... game-state.o"
 	@echo "... game-state.i"
 	@echo "... game-state.s"
-	@echo "... player.o"
-	@echo "... player.i"
-	@echo "... player.s"
 	@echo "... random.o"
 	@echo "... random.i"
 	@echo "... random.s"
 	@echo "... screen-worms-server.o"
 	@echo "... screen-worms-server.i"
 	@echo "... screen-worms-server.s"
-	@echo "... server-to-client.o"
-	@echo "... server-to-client.i"
-	@echo "... server-to-client.s"
 .PHONY : help
 
 

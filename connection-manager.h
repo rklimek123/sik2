@@ -14,7 +14,6 @@
 #include <utility>
 
 #include "client-to-server.h"
-#include "server-to-client.h"
 #include "game-state.h"
 #include "types.h"
 
@@ -117,6 +116,7 @@ class ConnectionManager {
         bool handle_request_nogame(const cts_t& req);
         void handle_request_game(GameState& game, const cts_t& req,  player_number_t player_index);
         void prepare_for_new_game();
+        void end_game();
 
         player_number_t connected_players_count() const;
         int index_ingame(const sockaddr& addr) const;

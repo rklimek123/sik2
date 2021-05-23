@@ -5,6 +5,7 @@
 #include <unistd.h>
 
 #include <algorithm>
+#include <cmath>
 #include <iostream>
 #include <map>
 #include <set>
@@ -12,7 +13,6 @@
 #include <vector>
 
 #include "client-to-server.h"
-#include "err.h"
 #include "event-parser.h"
 #include "random.h"
 #include "types.h"
@@ -21,6 +21,8 @@
 struct Player {
     Player(double x_, double y_, short oriented_):
         x(x_), y(y_), oriented(oriented_), is_dead(false) {};
+
+    void move();
 
     double x;
     double y;

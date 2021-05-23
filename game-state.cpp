@@ -1,5 +1,15 @@
 #include "game-state.h"
 
+void Player::move() {
+    double angle = (double)oriented * M_PI / 180;
+    double delta_x = cos(angle);
+    double delta_y = -sin(angle);
+
+    x += delta_x;
+    y += delta_y;
+}
+
+
 event_no_t GameState::event_log_len() const {
     return next_event_no;
 }
@@ -54,9 +64,10 @@ void GameState::generate_gameover_event() {
 }
 
 void GameState::eat_pixel(player_number_t player, dimensions_t x, dimensions_t y) {
-    if (board[x][y]) {
+    if (x < 0 || x >= board_width || y < 0 || y >= board_height || board[x][y]) {
         players[player].is_dead = true;
         generate_player_eliminated_event(player);
+        --alive_players;
     }
     else {
         board[x][y] = true;
@@ -87,7 +98,35 @@ size_t GameState::get_event_at(event_no_t index, void** out) {
 }
 
 event_no_t GameState::next_turn() {
+    for (player_number_t i = 0; i < number_of_players; ++i) {
+        Player& player = players[i];
 
+        switch (player.last_turn_direction) {
+            case TURN_LEFT:
+                player.oriented = (player.oriented + turning_speed) % 360;
+                break;
+            case TURN_RIGHT:
+                player.oriented = (player.oriented - turning_speed) % 360;
+                break;
+            default:
+                break;
+        }
+        
+        dimensions_t previous_x = (dimensions_t)player.x;
+        dimensions_t previous_y = (dimensions_t)player.y;
+        player.move();
+
+        if (previous_x != (dimensions_t)player.x || previous_y != (dimensions_t)player.y) {
+            eat_pixel(i, player.x, player.y);
+        }
+
+        if (alive_players <= 1) {
+            generate_gameover_event();
+            break;
+        }
+    }
+
+    return next_event_no - 1;
 }
 
 bool GameState::try_change_turning(player_number_t player_index,

@@ -1,0 +1,2 @@
+/usr/bin/ar qc libconnection-manager.a  CMakeFiles/connection-manager.dir/connection-manager.cpp.o
+/usr/bin/ranlib libconnection-manager.a

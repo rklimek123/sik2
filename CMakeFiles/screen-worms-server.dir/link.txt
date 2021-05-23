@@ -1,1 +1,1 @@
-/usr/bin/c++  -g -Wall  -rdynamic CMakeFiles/screen-worms-server.dir/screen-worms-server.cpp.o  -o screen-worms-server liberr.a libclient-to-server.a libserver-to-client.a 
+/usr/bin/c++  -g -Wall -Wextra  -rdynamic CMakeFiles/screen-worms-server.dir/screen-worms-server.cpp.o  -o screen-worms-server libclient-to-server.a -lserver-to-client 

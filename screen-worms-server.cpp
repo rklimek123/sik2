@@ -14,11 +14,10 @@
 #include <utility>
 
 #include "client-to-server.h"
-#include "server-to-client.h"
 #include "connection-manager.h"
 #include "event-parser.h"
 #include "game-state.h"
-#include "random.h";
+#include "random.h"
 #include "types.h"
 
 namespace {
@@ -299,6 +298,8 @@ namespace {
             }
         }
     }
+
+    GameState* game = nullptr;
 }
 
 int main(int argc, char* argv[]) {
@@ -313,17 +314,19 @@ int main(int argc, char* argv[]) {
         try {
             gather_players();
             connection_manager.prepare_for_new_game();
-            GameState game(rng,
-                        turning_speed,
-                        board_width,
-                        board_height,
-                        connection_manager.connected_players_count());
+            delete game;
+            game = new GameState(rng,
+                                 turning_speed,
+                                 board_width,
+                                 board_height,
+                                 connection_manager.connected_players_count());
 
             event_no_t current_event =
-                game.event_start_newgame(connection_manager.playernames);
+                game->event_start_newgame(connection_manager.playernames);
             
-            connection_manager.broadcast(listen_socket, game, 0, current_event);
-            execute_turns(game, current_event + 1);
+            connection_manager.broadcast(listen_socket, *game, 0, current_event);
+            execute_turns(*game, current_event + 1);
+            connection_manager.end_game();
         }
         catch (std::exception& e) {
             std::cout << e.what() << std::endl;

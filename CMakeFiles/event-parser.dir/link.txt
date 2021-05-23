@@ -1,0 +1,2 @@
+/usr/bin/ar qc libevent-parser.a  CMakeFiles/event-parser.dir/event-parser.cpp.o
+/usr/bin/ranlib libevent-parser.a
