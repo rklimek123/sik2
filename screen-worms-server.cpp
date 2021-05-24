@@ -229,7 +229,7 @@ namespace {
 
 
     void gather_players() {
-        bool need_start;
+        bool need_start = false;
 
         while (!need_start) {
             connection_manager.check_activity();

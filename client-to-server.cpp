@@ -2,7 +2,7 @@
 
 namespace {
     bool verify_cts(cts_t& cts) {
-        if (cts.turn_direction < 0 || cts.turn_direction > 2)
+        if (cts.turn_direction > 2)
             return false;
         
         for (const char& c: cts.player_name) {
