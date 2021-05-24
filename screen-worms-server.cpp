@@ -33,6 +33,7 @@ namespace {
     int listen_socket;
 
     ConnectionManager connection_manager;
+    GameState* game = nullptr;
 
     uint64_t ticks_between_turn;
 
@@ -238,9 +239,17 @@ namespace {
             int ret = read_from_client(listen_socket, req);
             if (ret > 0) {
                 need_start = connection_manager.handle_request_nogame(req);
-                connection_manager.send_to_client_blank(listen_socket,
+
+                if (game != nullptr) {
+                    connection_manager.attempt_client_reply(listen_socket,
+                                                            req,
+                                                            *game);
+                }
+                else {
+                    connection_manager.send_to_client_blank(listen_socket,
                                                         &req.client_address,
                                                         req.client_addr_len);
+                }
             }
             else if (ret == READ_ERROR) {
                 throw new std::runtime_error("Read from client failed");
@@ -294,8 +303,6 @@ namespace {
             }
         }
     }
-
-    GameState* game = nullptr;
 }
 
 int main(int argc, char* argv[]) {
